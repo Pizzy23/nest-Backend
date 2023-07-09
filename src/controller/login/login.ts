@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Put } from '@nestjs/common';
+import { Headers, Controller, Get, Post, Put } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PutLogin, PutLogout } from 'src/dto/login/login-dto';
 import { StringResDTO } from 'src/dto/response/response-dto';
@@ -15,7 +15,7 @@ export class LoginController {
     summary: 'Login user by e-mail',
   })
   @Put('/login')
-  async loanGet(@Body() putLogin: PutLogin): Promise<StringRes> {
+  async loanGet(@Headers() putLogin: PutLogin): Promise<StringRes> {
     return this.service.putLogin(putLogin);
   }
   @ApiOkResponse({ type: [StringResDTO] })
@@ -23,7 +23,7 @@ export class LoginController {
     summary: 'Logout user by e-mail',
   })
   @Put('/logout')
-  async logoutUser(@Body() putLogout: PutLogout): Promise<StringRes> {
+  async logoutUser(@Headers() putLogout: PutLogout): Promise<StringRes> {
     return this.service.putLogout(putLogout);
   }
 }

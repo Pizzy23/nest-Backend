@@ -19,17 +19,18 @@ export class LoanService extends BaseService {
   async createUserAndLoan(input: LoanInputDto) {
     try {
       const cpfVali = super.cpfReader(input.userId);
+      const current = parseInt(input.current)
       const emailVali = super.emailValidate(input.email);
       const passVali = super.checkPassword(input.password);
       if (cpfVali == true && emailVali == true && passVali == true) {
         const score = await this.calculerScore.calculerScore(input);
-        const loan = this.loanMax(score, input.current);
+        const loan = this.loanMax(score, current);
         const userId = super.encrypt(input.userId);
         await this.repository.postLoanUser({
           userId: userId,
           email: input.email,
           adress: input.adress,
-          current: input.current,
+          current: current,
           phone: input.phone,
           loan: loan.loan,
           score: score,

@@ -27,7 +27,7 @@ export class LoanController {
     summary: 'Create user in db',
     description: 'Creates the new user score, and adds it to our base',
   })
-  async loanCalulation(@Body() loanInputDto: LoanInputDto): Promise<StringRes> {
+  async loanCalulation(@Headers() loanInputDto: LoanInputDto): Promise<StringRes> {
     return await this.service.createUserAndLoan(loanInputDto);
   }
   @Get('/')
@@ -62,7 +62,7 @@ export class LoanController {
     description:
       'Add the loan required by the customer to the base, seeing if he is elderly or not.',
   })
-  async loanMake(@Body() postMakeLoanDto: PostMakeLoanDto): Promise<StringRes> {
+  async loanMake(@Headers() postMakeLoanDto: PostMakeLoanDto): Promise<StringRes> {
     return await this.service.loanMake(postMakeLoanDto);
   }
 }
