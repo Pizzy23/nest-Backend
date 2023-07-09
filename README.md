@@ -34,7 +34,7 @@ localhost:3000/api
 If you want to test it on AWS:
 
 ```
-
+http://18.220.45.222:3000/api
 ```
 
 # Use Cases
