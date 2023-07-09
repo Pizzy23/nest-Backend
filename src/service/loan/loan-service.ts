@@ -5,6 +5,7 @@ import { ScoreService } from '../score/score-service';
 import { LoanEntity } from 'src/entity/loan/loan-entity';
 import { LoanMake, LoanMax, UserLoan } from 'src/interface/loan/loan-interface';
 import { PrismaService } from 'src/config/prisma.service';
+import { StringRes } from 'src/interface/response/response-interface';
 
 @Injectable()
 export class LoanService extends BaseService {
@@ -18,17 +19,18 @@ export class LoanService extends BaseService {
   async createUserAndLoan(input: LoanInputDto) {
     try {
       const cpfVali = super.cpfReader(input.userId);
+      const current = parseInt(input.current)
       const emailVali = super.emailValidate(input.email);
       const passVali = super.checkPassword(input.password);
       if (cpfVali == true && emailVali == true && passVali == true) {
         const score = await this.calculerScore.calculerScore(input);
-        const loan = this.loanMax(score, input.current);
+        const loan = this.loanMax(score, current);
         const userId = super.encrypt(input.userId);
         await this.repository.postLoanUser({
           userId: userId,
           email: input.email,
           adress: input.adress,
-          current: input.current,
+          current: current,
           phone: input.phone,
           loan: loan.loan,
           score: score,
@@ -116,7 +118,7 @@ export class LoanService extends BaseService {
     return { res: 'loan was sent', status: 200 };
   }
 
-  async loanMake(input: LoanMake) {
+  async loanMake(input: LoanMake): Promise<StringRes> {
     let relative: UserLoan;
     if (input.emailRelative) {
       relative = await this.repository.getLoanUser(input.emailRelative);
