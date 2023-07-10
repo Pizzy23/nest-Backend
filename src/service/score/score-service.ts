@@ -33,6 +33,7 @@ export class ScoreService extends BaseService {
     }
   }
   maxMin() {
+    
     return { min: 0, max: 1000, status: 200 };
   }
 }

@@ -19,7 +19,7 @@ export class LoanService extends BaseService {
   async createUserAndLoan(input: LoanInputDto) {
     try {
       const cpfVali = super.cpfReader(input.userId);
-      const current = parseInt(input.current)
+      const current = parseInt(input.current);
       const emailVali = super.emailValidate(input.email);
       const passVali = super.checkPassword(input.password);
       if (cpfVali == true && emailVali == true && passVali == true) {
@@ -134,6 +134,20 @@ export class LoanService extends BaseService {
     return await this.loanOld(input);
   }
   async getHomeUser(email: string) {
-    return await this.repository.getLoanUser(email);
+    const user = await this.repository.getLoanUser(email);
+    let percentage = (user.score / 1000) * 100;
+    const newUser = {
+      name: user.name,
+      adress: user.adress,
+      phone: user.phone,
+      current: user.current,
+      email: user.email,
+      userId: user.userId,
+      password: user.password,
+      score: user.score,
+      loan: user.loan,
+      scorePorcent: Math.floor(percentage),
+    };
+    return newUser;
   }
 }
